@@ -1,0 +1,18 @@
+- name: Configuration du profil de gestion d'interface
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Créer un profil de gestion d’interface nommé "ping-reponse-pages"
+      paloaltonetworks.panos.panos_type:
+        provider:
+          ip_address: 161.1.7.150
+          username: admin
+          password: Admin123
+        xpath: "/config/devices/entry[@name='localhost.localdomain']/network/profiles/interface-management-profile/entry[@name='ping-reponse-pages']"
+        element: |
+          <http>yes</http>
+          <https>yes</https>
+          <ssh>yes</ssh>
+          <ping>yes</ping>
