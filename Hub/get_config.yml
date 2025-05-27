@@ -1,0 +1,58 @@
+---
+- name: Récupération et affichage de la configuration PAN-OS
+  hosts: paloalto-fw
+  connection: local
+  gather_facts: false
+  tasks:
+
+    - name: Obtenir la configuration des interfaces
+      paloaltonetworks.panos.panos_op:
+        provider:
+          ip_address: "{{ ansible_host }}"
+          username: "admin"
+          password: "Admin123"
+        cmd: "show interface all"
+      register: interfaces
+
+    - name: Afficher la configuration des interfaces
+      debug:
+        var: interfaces.stdout
+
+    - name: Obtenir la configuration des tunnels IPSEC
+      paloaltonetworks.panos.panos_op:
+        provider:
+          ip_address: "{{ ansible_host }}"
+          username: "admin"
+          password: "Admin123"
+        cmd: "show vpn tunnel"
+      register: tunnels_ipsec
+
+    - name: Afficher la configuration des tunnels IPSEC
+      debug:
+        var: tunnels_ipsec.stdout
+
+    - name: Obtenir la configuration du Virtual Router
+      paloaltonetworks.panos.panos_op:
+        provider:
+          ip_address: "{{ ansible_host }}"
+          username: "admin"
+          password: "Admin123"
+        cmd: "show routing route"
+      register: virtual_router
+
+    - name: Afficher la configuration du Virtual Router
+      debug:
+        var: virtual_router.stdout
+
+    - name: Obtenir les règles de sécurité
+      paloaltonetworks.panos.panos_op:
+        provider:
+          ip_address: "{{ ansible_host }}"
+          username: "admin"
+          password: "Admin123"
+        cmd: "show running security-policy"
+      register: security_policies
+
+    - name: Afficher les règles de sécurité
+      debug:
+        var: security_policies.stdout
