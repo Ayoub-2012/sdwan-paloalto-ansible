@@ -2,6 +2,9 @@
 - name: Récupération et affichage de la configuration PAN-OS
   hosts: paloalto-fw
   connection: local
+  collections:
+  - name: paloaltonetworks.panos
+  
   gather_facts: false
   tasks:
 
