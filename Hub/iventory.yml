@@ -1,1 +1,9 @@
+all:
+  hosts:
+    paloalto-fw:
+      ansible_host: 161.1.7.100
+
+
+
+
 
