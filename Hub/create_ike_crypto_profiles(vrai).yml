@@ -1,0 +1,49 @@
+---
+- name: Création des profils IKE Crypto
+  hosts: paloalto-fw
+  connection: local
+  gather_facts: no
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "admin"
+      password: "Admin123"
+      # Enlever `timeout` et `verify`
+
+  tasks:
+    - name: Créer le profil IKE crypto-vpn-hub-spoke1
+      paloaltonetworks.panos.panos_ike_crypto_profile:
+        provider: "{{ provider }}"
+        name: "crypto-vpn-hub-spoke1"
+        encryption: ["aes-256-gcm"]
+        authentication: ["non-auth"]
+        dh_group: ["group20"]
+        lifetime_seconds: 28800
+
+    - name: Créer le profil IKE crypto-vpn-hub-spoke2
+      paloaltonetworks.panos.panos_ike_crypto_profile:
+        provider: "{{ provider }}"
+        name: "crypto-vpn-hub-spoke2"
+        encryption: ["aes-256-gcm"]
+        authentication: ["non-auth"]
+        dh_group: ["group20"]
+        lifetime_seconds: 28800
+
+    - name: Créer le profil IKE crypto2-vpn-hub-spoke1
+      paloaltonetworks.panos.panos_ike_crypto_profile:
+        provider: "{{ provider }}"
+        name: "crypto2-vpn-hub-spoke1"
+        encryption: ["aes-256-gcm"]
+        authentication: ["non-auth"]
+        dh_group: ["group20"]
+        lifetime_seconds: 28800
+
+    - name: Créer le profil IKE crypto2-vpn-hub-spoke2
+      paloaltonetworks.panos.panos_ike_crypto_profile:
+        provider: "{{ provider }}"
+        name: "crypto2-vpn-hub-spoke2"
+        encryption: ["aes-256-gcm"]
+        authentication: ["non-auth"]
+        dh_group: ["group20"]
+        lifetime_seconds: 28800
