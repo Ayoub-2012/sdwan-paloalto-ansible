@@ -1,0 +1,23 @@
+---
+- name: Affichage du Virtual Router VR1
+  hosts: paloalto-fw
+  connection: local
+  gather_facts: no
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "admin"
+      password: "Admin123"
+
+  tasks:
+    - name: Récupérer la configuration de VR1
+      paloaltonetworks.panos.panos_virtual_router:
+        provider: "{{ provider }}"
+        name: "VR1"
+        state: gathered
+      register: vr_result
+
+    - name: Afficher la configuration de VR1
+      debug:
+        var: vr_result
