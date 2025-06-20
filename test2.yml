@@ -1,7 +1,0 @@
----
-- name: Test de connectivité avec les pare-feux Palo Alto
-  hosts: paloalto
-  gather_facts: no
-  tasks:
-    - name: Vérifier la connectivité SSH
-      ping:
