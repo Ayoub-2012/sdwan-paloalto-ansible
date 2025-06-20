@@ -1,0 +1,23 @@
+---
+- name: Afficher la configuration des interfaces (physiques + tunnels)
+  hosts: paloalto-fw
+  connection: local
+  gather_facts: false
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "admin"
+      password: "Admin123"
+
+  tasks:
+    - name: Obtenir la configuration des interfaces
+      paloaltonetworks.panos.panos_op:
+        provider: "{{ provider }}"
+        cmd: "show interface all"
+      register: interface_result
+
+    - name: Afficher les détails des interfaces
+      debug:
+        var: interface_result.stdout
+
