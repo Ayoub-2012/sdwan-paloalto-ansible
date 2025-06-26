@@ -2,6 +2,10 @@
 - name: Configuration manuelle des interfaces Ethernet sur le HUB Palo Alto
   hosts: paloalto-fw
   connection: local
+  collections:
+  - name: paloaltonetworks.panos
+    version: ">=2.12.0"
+
   gather_facts: no
 
   vars:
