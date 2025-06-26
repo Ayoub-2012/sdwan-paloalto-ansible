@@ -1,0 +1,16 @@
+---
+- name: Configuration manuelle des interfaces Ethernet sur le HUB Palo Alto
+  hosts: paloalto-fw
+  gather_facts: false
+
+  collections:
+    - paloaltonetworks.panos   
+
+  tasks:
+    - name: Configurer ethernet1/1 avec IP statique dans la zone public
+      paloaltonetworks.panos.panos_interface:
+        provider: "{{ provider }}"
+        interface_name: ethernet1/1
+        mode: layer3
+        ip: ["192.168.1.1/24"]
+        zone_name: public
