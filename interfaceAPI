@@ -1,0 +1,47 @@
+---
+- name: Configurer interfaces Ethernet via API Palo Alto (admin/Admin123, IP fixe)
+  hosts: paloalto-fw
+  connection: local
+  gather_facts: false
+
+  vars:
+    username: "admin"
+    password: "Admin123"
+    base_url: "https://161.1.7.150/api/"
+    xpath_base: "/config/devices/entry[@name='localhost.localdomain']/network/interface/ethernet/entry[@name='{{ interface_name }}']"
+
+  tasks:
+
+    - name: Configurer ethernet1/1 - zone public
+      uri:
+        url: "{{ base_url }}?type=config&action=set&user={{ username }}&password={{ password }}&xpath={{ xpath_base }}&element=<layer3><ip><entry name='5.2.0.2/24'/></ip></layer3>"
+        method: GET
+        return_content: yes
+        validate_certs: false
+      vars:
+        interface_name: "ethernet1/1"
+
+    - name: Configurer ethernet1/2 - zone dmz
+      uri:
+        url: "{{ base_url }}?type=config&action=set&user={{ username }}&password={{ password }}&xpath={{ xpath_base }}&element=<layer3><ip><entry name='172.21.0.1/24'/></ip></layer3>"
+        method: GET
+        return_content: yes
+        validate_certs: false
+      vars:
+        interface_name: "ethernet1/2"
+
+    - name: Configurer ethernet1/3 - zone dmz
+      uri:
+        url: "{{ base_url }}?type=config&action=set&user={{ username }}&password={{ password }}&xpath={{ xpath_base }}&element=<layer3><ip><entry name='5.3.0.1/24'/></ip></layer3>"
+        method: GET
+        return_content: yes
+        validate_certs: false
+      vars:
+        interface_name: "ethernet1/3"
+
+    - name: Commit des changements sur le firewall
+      uri:
+        url: "{{ base_url }}?type=commit&cmd=<commit></commit>&user={{ username }}&password={{ password }}"
+        method: GET
+        return_content: yes
+        validate_certs: false
