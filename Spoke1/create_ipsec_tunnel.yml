@@ -1,0 +1,52 @@
+---
+- name: Création des tunnels IPSec
+  hosts: paloalto-fw
+  connection: local
+  gather_facts: no
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "admin"
+      password: "Admin123"
+
+  tasks:
+    - name: Créer le tunnel ipsec-hub-to-spoke1
+      paloaltonetworks.panos.panos_ipsec_tunnel:
+        provider: "{{ provider }}"
+        name: "ipsec-hub-to-spoke1"
+        ak_ike_gateway: "ike-hub-spoke1"
+        ak_ipsec_crypto_profile: "crypto-hub-spokel"
+        tunnel_interface: "tunnel.1"
+        type: "auto-key"
+        state: "present"
+
+    - name: Créer le tunnel ipsec-hub-to-spoke2
+      paloaltonetworks.panos.panos_ipsec_tunnel:
+        provider: "{{ provider }}"
+        name: "ipsec-hub-to-spoke2"
+        ak_ike_gateway: "ike-hub-spoke2"
+        ak_ipsec_crypto_profile: "crypto-hub-poke2"
+        tunnel_interface: "tunnel.2"
+        type: "auto-key"
+        state: "present"
+
+    - name: Créer le tunnel ipsecBGP-hub-to-spoke1
+      paloaltonetworks.panos.panos_ipsec_tunnel:
+        provider: "{{ provider }}"
+        name: "ipsecBGP-hub-to-spoke1"
+        ak_ike_gateway: "ike2-hub-to-spoke1"
+        ak_ipsec_crypto_profile: "crypto2-hub-to-spoke"
+        tunnel_interface: "tunnel.4"
+        type: "auto-key"
+        state: "present"
+
+    - name: Créer le tunnel ipsecBGP-hub-to-spoke2
+      paloaltonetworks.panos.panos_ipsec_tunnel:
+        provider: "{{ provider }}"
+        name: "ipsecBGP-hub-to-spoke2"
+        ak_ike_gateway: "ike2-hub-to-spoke2"
+        ak_ipsec_crypto_profile: "crypto2-hut-to-spoke"
+        tunnel_interface: "tunnel.5"
+        type: "auto-key"
+        state: "present"
