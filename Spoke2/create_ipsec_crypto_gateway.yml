@@ -1,0 +1,56 @@
+---
+- name: Création des IKE Gateways
+  hosts: paloalto-fw
+  connection: local
+  gather_facts: no
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "admin"
+      password: "Admin123"
+
+  tasks:
+    - name: Créer la gateway ike-hub-spoke1
+      paloaltonetworks.panos.panos_ike_gateway:
+        provider: "{{ provider }}"
+        name: "ike-hub-spoke1"
+        interface: "ethernet1/1"
+        peer_ip_value: "5.2.1.2"
+        version: "ikev2"
+        ikev2_crypto_profile: "crypto-vpn-hub-spoke1"
+        enable_passive_mode: false
+        enable_nat_traversal: true
+
+    - name: Créer la gateway ike-hub-spoke2
+      paloaltonetworks.panos.panos_ike_gateway:
+        provider: "{{ provider }}"
+        name: "ike-hub-spoke2"
+        interface: "ethernet1/1"
+        peer_ip_value: "5.2.2.2"
+        version: "ikev2"
+        ikev2_crypto_profile: "crypto-vpn-hub-spoke2"
+        enable_passive_mode: false
+        enable_nat_traversal: true
+
+    - name: Créer la gateway ike2-hub-to-spoke1
+      paloaltonetworks.panos.panos_ike_gateway:
+        provider: "{{ provider }}"
+        name: "ike2-hub-to-spoke1"
+        interface: "ethernet1/3"
+        peer_ip_value: "5.3.1.2"
+        version: "ikev2"
+        ikev2_crypto_profile: "crypto2-vpn-hub-spoke1"
+        enable_passive_mode: false
+        enable_nat_traversal: true
+
+    - name: Créer la gateway ike2-hub-to-spoke2
+      paloaltonetworks.panos.panos_ike_gateway:
+        provider: "{{ provider }}"
+        name: "ike2-hub-to-spoke2"
+        interface: "ethernet1/3"
+        peer_ip_value: "5.3.2.2"
+        version: "ikev2"
+        ikev2_crypto_profile: "crypto2-vpn-hub-spoke2"
+        enable_passive_mode: false
+        enable_nat_traversal: true
