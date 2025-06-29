@@ -1,0 +1,22 @@
+---
+- name: Créer un Virtual Router vide nommé VR1
+  hosts: paloalto-fw
+  connection: local
+  gather_facts: no
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "admin"
+      password: "Admin123"
+
+  tasks:
+    - name: Créer le Virtual Router VR1 (vide)
+      paloaltonetworks.panos.panos_virtual_router:
+        provider: "{{ provider }}"
+        name: "VR1"
+        state: present
+
+    - name: Commit des changements
+      paloaltonetworks.panos.panos_commit:
+        provider: "{{ provider }}"
