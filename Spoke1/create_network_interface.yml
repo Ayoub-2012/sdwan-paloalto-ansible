@@ -1,0 +1,41 @@
+---
+- name: Configuration manuelle des interfaces Ethernet sur le HUB Palo Alto
+  hosts: paloalto-fw
+  connection: local
+
+  gather_facts: no
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "admin"
+      password: "Admin123"
+
+  tasks:
+
+    - name: Configurer ethernet1/1 avec IP statique dans la zone public
+      paloaltonetworks.panos.panos_interface:
+        provider: '{{ provider }}'
+        if_name: "ethernet1/1"
+        mode: "layer3"
+        ip: ["5.2.0.2/24"]
+        enable_dhcp: false
+        zone_name: "public"
+
+    - name: Configurer ethernet1/2 avec IP statique dans la zone dmz
+      paloaltonetworks.panos.panos_interface:
+        provider: '{{ provider }}'
+        if_name: "ethernet1/2"
+        mode: "layer3"
+        ip: ["172.21.0.1/24"]
+        enable_dhcp: false
+        zone_name: "dmz"
+
+    - name: Configurer ethernet1/3 avec IP statique dans la zone dmz
+      paloaltonetworks.panos.panos_interface:
+        provider: '{{ provider }}'
+        if_name: "ethernet1/3"
+        mode: "layer3"
+        ip: ["5.3.0.1/24"]
+        enable_dhcp: false
+        zone_name: "dmz"
