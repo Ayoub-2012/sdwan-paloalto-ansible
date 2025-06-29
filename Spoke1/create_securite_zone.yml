@@ -1,0 +1,101 @@
+---
+- name: Création des zones et configuration des interfaces sur le HUB Palo Alto
+  hosts: paloalto-fw
+  connection: local
+  gather_facts: no
+
+  vars:
+    provider:
+      ip_address: "{{ ansible_host }}"
+      username: "admin"
+      password: "Admin123"
+
+  tasks:
+
+    # Création des zones
+    - name: Créer la zone WAN
+      paloaltonetworks.panos.panos_zone:
+        provider: "{{ provider }}"
+        zone: "WAN"
+        mode: "layer3"
+
+    - name: Créer la zone LAN
+      paloaltonetworks.panos.panos_zone:
+        provider: "{{ provider }}"
+        zone: "LAN"
+        mode: "layer3"
+
+    - name: Créer la zone ipsec-hub-to-spoke1
+      paloaltonetworks.panos.panos_zone:
+        provider: "{{ provider }}"
+        zone: "ipsec-hub-to-spoke1"
+        mode: "layer3"
+
+    - name: Créer la zone ipsec-hub-to-spoke2
+      paloaltonetworks.panos.panos_zone:
+        provider: "{{ provider }}"
+        zone: "ipsec-hub-to-spoke2"
+        mode: "layer3"
+
+    - name: Créer la zone ipsecBGP-hub-to-spoke1
+      paloaltonetworks.panos.panos_zone:
+        provider: "{{ provider }}"
+        zone: "ipsecBGP-hub-to-spoke1"
+        mode: "layer3"
+
+    - name: Créer la zone ipsecBGP-hub-to-spoke2
+      paloaltonetworks.panos.panos_zone:
+        provider: "{{ provider }}"
+        zone: "ipsecBGP-hub-to-spoke2"
+        mode: "layer3"
+
+    # Assignation des interfaces aux zones
+
+    - name: Associer ethernet1/1 à la zone WAN
+      paloaltonetworks.panos.panos_interface:
+        provider: "{{ provider }}"
+        if_name: "ethernet1/1"
+        mode: "layer3"
+        zone_name: "WAN"
+
+    - name: Associer ethernet1/2 à la zone LAN
+      paloaltonetworks.panos.panos_interface:
+        provider: "{{ provider }}"
+        if_name: "ethernet1/2"
+        mode: "layer3"
+        zone_name: "LAN"
+
+    - name: Associer ethernet1/3 à la zone WAN
+      paloaltonetworks.panos.panos_interface:
+        provider: "{{ provider }}"
+        if_name: "ethernet1/3"
+        mode: "layer3"
+        zone_name: "WAN"
+
+    - name: Associer tunnel.1 à la zone ipsec-hub-to-spoke1
+      paloaltonetworks.panos.panos_interface:
+        provider: "{{ provider }}"
+        if_name: "tunnel.1"
+        mode: "layer3"
+        zone_name: "ipsec-hub-to-spoke1"
+
+    - name: Associer tunnel.2 à la zone ipsec-hub-to-spoke2
+      paloaltonetworks.panos.panos_interface:
+        provider: "{{ provider }}"
+        if_name: "tunnel.2"
+        mode: "layer3"
+        zone_name: "ipsec-hub-to-spoke2"
+
+    - name: Associer tunnel.4 à la zone ipsecBGP-hub-to-spoke1
+      paloaltonetworks.panos.panos_interface:
+        provider: "{{ provider }}"
+        if_name: "tunnel.4"
+        mode: "layer3"
+        zone_name: "ipsecBGP-hub-to-spoke1"
+
+    - name: Associer tunnel.5 à la zone ipsecBGP-hub-to-spoke2
+      paloaltonetworks.panos.panos_interface:
+        provider: "{{ provider }}"
+        if_name: "tunnel.5"
+        mode: "layer3"
+        zone_name: "ipsecBGP-hub-to-spoke2"
